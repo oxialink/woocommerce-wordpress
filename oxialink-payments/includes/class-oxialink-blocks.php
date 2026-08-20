@@ -48,9 +48,13 @@ final class Oxialink_Blocks_Support extends AbstractPaymentMethodType
         $coins = array();
         if ($this->gateway) {
             foreach ($this->gateway->offered_coins() as $coin) {
+                $meta = isset(WC_Gateway_Oxialink::COIN_META[$coin]) ? WC_Gateway_Oxialink::COIN_META[$coin] : array($coin, '', 'btc');
                 $coins[] = array(
                     'value' => $coin,
                     'label' => WC_Gateway_Oxialink::COINS[$coin],
+                    'name' => $meta[0],
+                    'network' => $meta[1],
+                    'logo' => 'https://oxialink.com/coin-logos/' . $meta[2] . '.png',
                 );
             }
         }

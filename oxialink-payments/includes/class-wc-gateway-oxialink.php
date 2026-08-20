@@ -34,6 +34,45 @@ class WC_Gateway_Oxialink extends WC_Payment_Gateway
         'TON'         => 'Toncoin',
     );
 
+    /** Display metadata for the checkout picker: name, network, logo key. */
+    const COIN_META = array(
+        'USDT_TON'    => array('USDT', 'TON', 'usdt'),
+        'USDT_TRC20'  => array('USDT', 'Tron', 'usdt'),
+        'USDT_BEP20'  => array('USDT', 'BSC', 'usdt'),
+        'USDT_SOLANA' => array('USDT', 'Solana', 'usdt'),
+        'USDT_ERC20'  => array('USDT', 'Ethereum', 'usdt'),
+        'USDC_SOLANA' => array('USDC', 'Solana', 'usdc'),
+        'BTC'         => array('Bitcoin', 'BTC', 'btc'),
+        'ETH'         => array('Ethereum', 'ETH', 'eth'),
+        'LTC'         => array('Litecoin', 'LTC', 'ltc'),
+        'DOGE'        => array('Dogecoin', 'DOGE', 'doge'),
+        'DASH'        => array('Dash', 'DASH', 'dash'),
+        'BNB'         => array('BNB', 'BSC', 'bnb'),
+        'TRX'         => array('TRON', 'TRX', 'trx'),
+        'TON'         => array('Toncoin', 'TON', 'ton'),
+    );
+
+    /** Scoped checkout styles shared by the classic picker and thank-you box. */
+    public static function picker_css()
+    {
+        return '<style id="oxialink-css">'
+            . '.oxl-picker{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}'
+            . '.oxl-coin{position:relative;margin:0}'
+            . '.oxl-coin input{position:absolute;opacity:0;width:1px;height:1px}'
+            . '.oxl-tile{display:flex;align-items:center;gap:9px;padding:9px 14px 9px 10px;border:1.5px solid #e2e5ec;'
+            . 'border-radius:10px;cursor:pointer;background:#fff;transition:border-color .15s,box-shadow .15s,background .15s}'
+            . '.oxl-coin input:focus-visible+.oxl-tile{outline:2px solid #ff914d;outline-offset:2px}'
+            . '.oxl-tile:hover{border-color:#ffbe58}'
+            . '.oxl-coin input:checked+.oxl-tile{border-color:#ff914d;background:#fff5ec;box-shadow:0 2px 8px rgba(255,145,77,.25)}'
+            . '.oxl-tile img{width:26px;height:26px;border-radius:50%;display:block}'
+            . '.oxl-txt{display:flex;flex-direction:column;line-height:1.15}'
+            . '.oxl-name{font-weight:600;font-size:13px;color:#1f2937}'
+            . '.oxl-net{font-size:11px;color:#6b7280}'
+            . '.oxl-note{display:flex;align-items:center;gap:7px;font-size:12px;color:#6b7280;margin:10px 0 2px}'
+            . '.oxl-note svg{flex-shrink:0}'
+            . '</style>';
+    }
+
     public function __construct()
     {
         $this->id                 = 'oxialink';
@@ -182,13 +221,26 @@ class WC_Gateway_Oxialink extends WC_Payment_Gateway
             echo wp_kses_post(wpautop($this->description));
         }
         $coins = $this->offered_coins();
-        echo '<p class="form-row form-row-wide">';
-        echo '<label for="oxialink_coin">' . esc_html__('Pay with', 'oxialink-payments') . '</label>';
-        echo '<select id="oxialink_coin" name="oxialink_coin" style="width:100%;max-width:320px;">';
+        echo self::picker_css(); // phpcs:ignore WordPress.Security.EscapeOutput -- static CSS string
+        echo '<div class="oxl-picker" role="radiogroup" aria-label="' . esc_attr__('Choose a cryptocurrency', 'oxialink-payments') . '">';
+        $first = true;
         foreach ($coins as $coin) {
-            printf('<option value="%s">%s</option>', esc_attr($coin), esc_html(self::COINS[$coin]));
+            $meta = isset(self::COIN_META[$coin]) ? self::COIN_META[$coin] : array($coin, '', 'btc');
+            printf(
+                '<label class="oxl-coin"><input type="radio" name="oxialink_coin" value="%1$s" %2$s />'
+                . '<span class="oxl-tile"><img src="https://oxialink.com/coin-logos/%3$s.png" alt="" loading="lazy" />'
+                . '<span class="oxl-txt"><span class="oxl-name">%4$s</span><span class="oxl-net">%5$s</span></span></span></label>',
+                esc_attr($coin),
+                checked($first, true, false),
+                esc_attr($meta[2]),
+                esc_html($meta[0]),
+                esc_html($meta[1])
+            );
+            $first = false;
         }
-        echo '</select></p>';
+        echo '</div>';
+        echo '<p class="oxl-note"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ff914d" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>'
+            . esc_html__('Secure payment page with QR code and live confirmation tracking.', 'oxialink-payments') . '</p>';
     }
 
     public function validate_fields()

@@ -80,13 +80,16 @@ add_action('woocommerce_thankyou', function ($order_id) {
     if (!$pay_url) {
         return;
     }
-    echo '<section style="margin:1em 0;padding:1em;border:1px solid #eee;border-radius:8px;">';
-    echo '<p>' . sprintf(
+    echo '<section style="margin:1.2em 0;padding:18px 20px;border:1.5px solid #ffd4a8;border-left:5px solid #ff914d;border-radius:12px;background:#fff9f3;">';
+    echo '<p style="margin:0 0 4px;font-weight:600;color:#1f2937;">'
+        . esc_html__('Crypto payment in progress', 'oxialink-payments') . '</p>';
+    echo '<p style="margin:0 0 12px;color:#4b5563;font-size:14px;">' . sprintf(
         /* translators: %s: invoice code */
-        esc_html__('Your crypto payment (invoice %s) is confirming on-chain. This page updates once it settles.', 'oxialink-payments'),
-        esc_html($code)
+        esc_html__('Invoice %s is confirming on-chain. This page updates once it settles.', 'oxialink-payments'),
+        '<code>' . esc_html($code) . '</code>'
     ) . '</p>';
-    echo '<p><a class="button" href="' . esc_url($pay_url) . '">' . esc_html__('Reopen the payment page', 'oxialink-payments') . '</a></p>';
+    echo '<p style="margin:0;"><a href="' . esc_url($pay_url) . '" style="display:inline-block;padding:10px 22px;background:#ff914d;color:#1f2430;font-weight:600;border-radius:10px;text-decoration:none;">'
+        . esc_html__('Reopen the payment page', 'oxialink-payments') . '</a></p>';
     echo '</section>';
 }, 10);
 

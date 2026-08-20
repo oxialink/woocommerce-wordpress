@@ -1,6 +1,6 @@
 /**
  * Oxialink payment method for the WooCommerce block-based checkout.
- * No build step: uses the globals WooCommerce Blocks ships.
+ * Branded coin-tile picker; no build step, uses the globals Blocks ships.
  */
 (function () {
   'use strict';
@@ -16,6 +16,30 @@
   var label = decodeEntities(settings.title || 'Cryptocurrency');
   var coins = settings.coins || [];
 
+  var styles = {
+    picker: { display: 'flex', flexWrap: 'wrap', gap: '8px', margin: '12px 0 4px' },
+    tile: function (selected) {
+      return {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '9px',
+        padding: '9px 14px 9px 10px',
+        border: '1.5px solid ' + (selected ? '#ff914d' : '#e2e5ec'),
+        borderRadius: '10px',
+        cursor: 'pointer',
+        background: selected ? '#fff5ec' : '#fff',
+        boxShadow: selected ? '0 2px 8px rgba(255,145,77,.25)' : 'none',
+        transition: 'border-color .15s, box-shadow .15s, background .15s',
+        font: 'inherit',
+      };
+    },
+    logo: { width: '26px', height: '26px', borderRadius: '50%', display: 'block' },
+    txt: { display: 'flex', flexDirection: 'column', lineHeight: 1.15, textAlign: 'left' },
+    name: { fontWeight: 600, fontSize: '13px', color: '#1f2937' },
+    net: { fontSize: '11px', color: '#6b7280' },
+    note: { display: 'flex', alignItems: 'center', gap: '7px', fontSize: '12px', color: '#6b7280', margin: '10px 0 2px' },
+  };
+
   function Content(props) {
     var state = useState(coins.length ? coins[0].value : '');
     var coin = state[0];
@@ -28,11 +52,7 @@
         var unsubscribe = eventRegistration.onPaymentSetup(function () {
           return {
             type: emitResponse.responseTypes.SUCCESS,
-            meta: {
-              paymentMethodData: {
-                oxialink_coin: coin,
-              },
-            },
+            meta: { paymentMethodData: { oxialink_coin: coin } },
           };
         });
         return unsubscribe;
@@ -44,19 +64,36 @@
       'div',
       null,
       settings.description ? el('p', null, decodeEntities(settings.description)) : null,
-      coins.length
-        ? el(
-            'select',
+      el(
+        'div',
+        { style: styles.picker, role: 'radiogroup', 'aria-label': 'Choose a cryptocurrency' },
+        coins.map(function (c) {
+          var selected = coin === c.value;
+          return el(
+            'button',
             {
-              value: coin,
-              onChange: function (e) { setCoin(e.target.value); },
-              style: { width: '100%', maxWidth: '320px', padding: '8px', marginTop: '4px' },
+              key: c.value,
+              type: 'button',
+              style: styles.tile(selected),
+              onClick: function () { setCoin(c.value); },
+              'aria-pressed': selected,
             },
-            coins.map(function (c) {
-              return el('option', { key: c.value, value: c.value }, c.label);
-            })
-          )
-        : null
+            el('img', { src: c.logo, alt: '', style: styles.logo, loading: 'lazy' }),
+            el(
+              'span',
+              { style: styles.txt },
+              el('span', { style: styles.name }, c.name || c.label),
+              el('span', { style: styles.net }, c.network || '')
+            )
+          );
+        })
+      ),
+      el(
+        'p',
+        { style: styles.note },
+        el('span', { 'aria-hidden': 'true' }, '🔒'),
+        'Secure payment page with QR code and live confirmation tracking.'
+      )
     );
   }
 
