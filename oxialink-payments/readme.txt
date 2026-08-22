@@ -20,9 +20,9 @@ Oxialink is a crypto payment gateway built to settle: every payment is tracked t
 * Orders complete automatically via HMAC-signed webhooks, verified byte-exactly before any order is touched, with an hourly status poll as a safety net
 * Underpayments put the order on hold with a note; expired invoices cancel the order
 * Merchant controls: order status after payment, invoice expiry, minimum order total, crypto surcharge or discount multiplier
-* No chargebacks, no rolling reserves, deposits free, processing from 0.2%
+* No chargebacks, no rolling reserves, processing from 0.2% per payment
 
-This plugin connects your store to the Oxialink payment service. A free Oxialink account is required; Oxialink charges a processing fee per withdrawal as published at https://oxialink.com/fees. All plugin functionality is included with the free plan.
+This plugin connects your store to the Oxialink payment service. A free Oxialink account is required; Oxialink charges a processing fee per payment as published at https://oxialink.com/fees. All plugin functionality is included with the free plan.
 
 == External services ==
 
