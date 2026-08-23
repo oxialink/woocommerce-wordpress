@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_Gateway_Oxialink extends WC_Payment_Gateway
+class Oxialink_Payment_Gateway extends WC_Payment_Gateway
 {
     /** Coins the gateway can offer. Mirrors Oxialink's live catalog. */
     const COINS = array(
@@ -76,8 +76,8 @@ class WC_Gateway_Oxialink extends WC_Payment_Gateway
     public function __construct()
     {
         $this->id                 = 'oxialink';
-        $this->method_title       = __('Oxialink', 'oxialink-payments');
-        $this->method_description = __('Accept USDT, Bitcoin, Ethereum, TON and more. Payments settle on-chain to your Oxialink wallet - no chargebacks.', 'oxialink-payments');
+        $this->method_title       = __('Oxialink', 'oxialink-crypto-payments-for-woocommerce');
+        $this->method_description = __('Accept USDT, Bitcoin, Ethereum, TON and more. Payments settle on-chain to your Oxialink wallet - no chargebacks.', 'oxialink-crypto-payments-for-woocommerce');
         $this->has_fields         = true;
         $this->icon               = plugins_url('assets/icon.png', OXIALINK_WC_PLUGIN_FILE);
 
@@ -97,100 +97,100 @@ class WC_Gateway_Oxialink extends WC_Payment_Gateway
 
         $this->form_fields = array(
             'enabled' => array(
-                'title'   => __('Enable/Disable', 'oxialink-payments'),
+                'title'   => __('Enable/Disable', 'oxialink-crypto-payments-for-woocommerce'),
                 'type'    => 'checkbox',
-                'label'   => __('Enable Oxialink payments', 'oxialink-payments'),
+                'label'   => __('Enable Oxialink payments', 'oxialink-crypto-payments-for-woocommerce'),
                 'default' => 'no',
             ),
             'title' => array(
-                'title'       => __('Title', 'oxialink-payments'),
+                'title'       => __('Title', 'oxialink-crypto-payments-for-woocommerce'),
                 'type'        => 'text',
-                'description' => __('Shown to the customer at checkout.', 'oxialink-payments'),
-                'default'     => __('Cryptocurrency (USDT, BTC, ETH & more)', 'oxialink-payments'),
+                'description' => __('Shown to the customer at checkout.', 'oxialink-crypto-payments-for-woocommerce'),
+                'default'     => __('Cryptocurrency (USDT, BTC, ETH & more)', 'oxialink-crypto-payments-for-woocommerce'),
                 'desc_tip'    => true,
             ),
             'description' => array(
-                'title'       => __('Description', 'oxialink-payments'),
+                'title'       => __('Description', 'oxialink-crypto-payments-for-woocommerce'),
                 'type'        => 'textarea',
-                'default'     => __('Pay with crypto. You will be redirected to a secure payment page with a QR code and live confirmation tracking.', 'oxialink-payments'),
+                'default'     => __('Pay with crypto. You will be redirected to a secure payment page with a QR code and live confirmation tracking.', 'oxialink-crypto-payments-for-woocommerce'),
                 'desc_tip'    => true,
             ),
             'api_credentials' => array(
-                'title'       => __('API credentials', 'oxialink-payments'),
+                'title'       => __('API credentials', 'oxialink-crypto-payments-for-woocommerce'),
                 'type'        => 'title',
                 'description' => sprintf(
                     /* translators: %s: settings URL */
-                    __('Create a free account and find your keys in the <a href="%s" target="_blank">Oxialink API docs page</a>. The webhook secret is in dashboard Settings.', 'oxialink-payments'),
+                    __('Create a free account and find your keys in the <a href="%s" target="_blank">Oxialink API docs page</a>. The webhook secret is in dashboard Settings.', 'oxialink-crypto-payments-for-woocommerce'),
                     'https://oxialink.com/api-docs'
                 ),
             ),
             'api_key' => array(
-                'title' => __('API key', 'oxialink-payments'),
+                'title' => __('API key', 'oxialink-crypto-payments-for-woocommerce'),
                 'type'  => 'text',
             ),
             'api_secret' => array(
-                'title' => __('API secret', 'oxialink-payments'),
+                'title' => __('API secret', 'oxialink-crypto-payments-for-woocommerce'),
                 'type'  => 'password',
             ),
             'webhook_secret' => array(
-                'title'       => __('Webhook secret', 'oxialink-payments'),
+                'title'       => __('Webhook secret', 'oxialink-crypto-payments-for-woocommerce'),
                 'type'        => 'password',
-                'description' => __('From Oxialink dashboard Settings. Used to verify that payment notifications really come from Oxialink.', 'oxialink-payments'),
+                'description' => __('From Oxialink dashboard Settings. Used to verify that payment notifications really come from Oxialink.', 'oxialink-crypto-payments-for-woocommerce'),
                 'desc_tip'    => true,
             ),
             'coins' => array(
-                'title'       => __('Coins offered at checkout', 'oxialink-payments'),
+                'title'       => __('Coins offered at checkout', 'oxialink-crypto-payments-for-woocommerce'),
                 'type'        => 'multiselect',
                 'class'       => 'wc-enhanced-select',
                 'options'     => $coin_options,
                 'default'     => array('USDT_TON', 'USDT_BEP20', 'USDT_TRC20', 'BTC', 'TON'),
-                'description' => __('The customer picks one of these at checkout.', 'oxialink-payments'),
+                'description' => __('The customer picks one of these at checkout.', 'oxialink-crypto-payments-for-woocommerce'),
                 'desc_tip'    => true,
             ),
             'behavior' => array(
-                'title' => __('Behavior', 'oxialink-payments'),
+                'title' => __('Behavior', 'oxialink-crypto-payments-for-woocommerce'),
                 'type'  => 'title',
             ),
             'paid_status' => array(
-                'title'       => __('Order status after payment', 'oxialink-payments'),
+                'title'       => __('Order status after payment', 'oxialink-crypto-payments-for-woocommerce'),
                 'type'        => 'select',
                 'options'     => array(
-                    'processing' => __('Processing (default)', 'oxialink-payments'),
-                    'completed'  => __('Completed', 'oxialink-payments'),
+                    'processing' => __('Processing (default)', 'oxialink-crypto-payments-for-woocommerce'),
+                    'completed'  => __('Completed', 'oxialink-crypto-payments-for-woocommerce'),
                 ),
                 'default'     => 'processing',
-                'description' => __('Status the order gets once the payment settles on-chain.', 'oxialink-payments'),
+                'description' => __('Status the order gets once the payment settles on-chain.', 'oxialink-crypto-payments-for-woocommerce'),
                 'desc_tip'    => true,
             ),
             'expiry_minutes' => array(
-                'title'       => __('Invoice expiry (minutes)', 'oxialink-payments'),
+                'title'       => __('Invoice expiry (minutes)', 'oxialink-crypto-payments-for-woocommerce'),
                 'type'        => 'number',
                 'default'     => '60',
                 'custom_attributes' => array('min' => '10', 'max' => '1440'),
-                'description' => __('How long the customer has to pay before the invoice expires.', 'oxialink-payments'),
+                'description' => __('How long the customer has to pay before the invoice expires.', 'oxialink-crypto-payments-for-woocommerce'),
                 'desc_tip'    => true,
             ),
             'min_order_total' => array(
-                'title'       => __('Minimum order total', 'oxialink-payments'),
+                'title'       => __('Minimum order total', 'oxialink-crypto-payments-for-woocommerce'),
                 'type'        => 'number',
                 'default'     => '0',
                 'custom_attributes' => array('min' => '0', 'step' => 'any'),
-                'description' => __('Hide this payment method for orders below this amount (store currency). 0 = always show.', 'oxialink-payments'),
+                'description' => __('Hide this payment method for orders below this amount (store currency). 0 = always show.', 'oxialink-crypto-payments-for-woocommerce'),
                 'desc_tip'    => true,
             ),
             'order_multiplier' => array(
-                'title'       => __('Order multiplier', 'oxialink-payments'),
+                'title'       => __('Order multiplier', 'oxialink-crypto-payments-for-woocommerce'),
                 'type'        => 'number',
                 'default'     => '1',
                 'custom_attributes' => array('min' => '0.5', 'max' => '2', 'step' => '0.01'),
-                'description' => __('Multiply the charged amount: 1.05 adds a 5% surcharge, 0.95 gives a 5% crypto discount.', 'oxialink-payments'),
+                'description' => __('Multiply the charged amount: 1.05 adds a 5% surcharge, 0.95 gives a 5% crypto discount.', 'oxialink-crypto-payments-for-woocommerce'),
                 'desc_tip'    => true,
             ),
             'api_base' => array(
-                'title'       => __('API base URL', 'oxialink-payments'),
+                'title'       => __('API base URL', 'oxialink-crypto-payments-for-woocommerce'),
                 'type'        => 'text',
                 'default'     => 'https://oxialink.com',
-                'description' => __('Leave as-is unless told otherwise.', 'oxialink-payments'),
+                'description' => __('Leave as-is unless told otherwise.', 'oxialink-crypto-payments-for-woocommerce'),
                 'desc_tip'    => true,
             ),
         );
@@ -222,7 +222,7 @@ class WC_Gateway_Oxialink extends WC_Payment_Gateway
         }
         $coins = $this->offered_coins();
         echo self::picker_css(); // phpcs:ignore WordPress.Security.EscapeOutput -- static CSS string
-        echo '<div class="oxl-picker" role="radiogroup" aria-label="' . esc_attr__('Choose a cryptocurrency', 'oxialink-payments') . '">';
+        echo '<div class="oxl-picker" role="radiogroup" aria-label="' . esc_attr__('Choose a cryptocurrency', 'oxialink-crypto-payments-for-woocommerce') . '">';
         $first = true;
         foreach ($coins as $coin) {
             $meta = isset(self::COIN_META[$coin]) ? self::COIN_META[$coin] : array($coin, '', 'btc');
@@ -240,14 +240,34 @@ class WC_Gateway_Oxialink extends WC_Payment_Gateway
         }
         echo '</div>';
         echo '<p class="oxl-note"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ff914d" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>'
-            . esc_html__('Secure payment page with QR code and live confirmation tracking.', 'oxialink-payments') . '</p>';
+            . esc_html__('Secure payment page with QR code and live confirmation tracking.', 'oxialink-crypto-payments-for-woocommerce') . '</p>';
+    }
+
+    /**
+     * The coin the customer picked, as posted by the checkout form.
+     *
+     * Both callers run inside WC_Checkout::process_checkout(), which has already
+     * verified the woocommerce-process-checkout-nonce. The block checkout reaches
+     * them through the Store API, which authenticates with its own nonce header and
+     * posts no checkout nonce, so verifying one here would reject every block-based
+     * order. The value is validated against the coins the merchant offers before it
+     * is used, and is never echoed or passed to a query.
+     */
+    private function posted_coin()
+    {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Verified upstream by WooCommerce, see method docblock.
+        if (!isset($_POST['oxialink_coin'])) {
+            return '';
+        }
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Verified upstream by WooCommerce, see method docblock.
+        return sanitize_text_field(wp_unslash($_POST['oxialink_coin']));
     }
 
     public function validate_fields()
     {
-        $coin = isset($_POST['oxialink_coin']) ? sanitize_text_field(wp_unslash($_POST['oxialink_coin'])) : '';
+        $coin = $this->posted_coin();
         if (!in_array($coin, $this->offered_coins(), true)) {
-            wc_add_notice(__('Please choose a cryptocurrency to pay with.', 'oxialink-payments'), 'error');
+            wc_add_notice(__('Please choose a cryptocurrency to pay with.', 'oxialink-crypto-payments-for-woocommerce'), 'error');
             return false;
         }
         return true;
@@ -257,7 +277,7 @@ class WC_Gateway_Oxialink extends WC_Payment_Gateway
     {
         $order = wc_get_order($order_id);
         $offered = $this->offered_coins();
-        $coin = isset($_POST['oxialink_coin']) ? sanitize_text_field(wp_unslash($_POST['oxialink_coin'])) : '';
+        $coin = $this->posted_coin();
         if (!in_array($coin, $offered, true)) {
             $coin = $offered[0]; // Blocks checkout may omit it; never fail the sale over a picker.
         }
@@ -291,13 +311,13 @@ class WC_Gateway_Oxialink extends WC_Payment_Gateway
         );
 
         if (is_wp_error($response)) {
-            wc_add_notice(__('Could not reach the payment service. Please try again.', 'oxialink-payments'), 'error');
+            wc_add_notice(__('Could not reach the payment service. Please try again.', 'oxialink-crypto-payments-for-woocommerce'), 'error');
             return array('result' => 'failure');
         }
 
         $data = json_decode(wp_remote_retrieve_body($response), true);
         if (empty($data['success']) || empty($data['data']['invoice_id'])) {
-            $message = !empty($data['message']) ? $data['message'] : __('Payment service rejected the request.', 'oxialink-payments');
+            $message = !empty($data['message']) ? $data['message'] : __('Payment service rejected the request.', 'oxialink-crypto-payments-for-woocommerce');
             wc_add_notice(esc_html($message), 'error');
             return array('result' => 'failure');
         }
@@ -311,7 +331,7 @@ class WC_Gateway_Oxialink extends WC_Payment_Gateway
         $order->update_meta_data('_oxialink_pay_url', $pay_url);
         $order->update_status('pending', sprintf(
             /* translators: 1: invoice code, 2: crypto amount, 3: coin */
-            __('Oxialink invoice %1$s created: %2$s %3$s at the live rate. Awaiting on-chain payment.', 'oxialink-payments'),
+            __('Oxialink invoice %1$s created: %2$s %3$s at the live rate. Awaiting on-chain payment.', 'oxialink-crypto-payments-for-woocommerce'),
             $invoice_code,
             $crypto_amount,
             $coin
@@ -403,7 +423,7 @@ class WC_Gateway_Oxialink extends WC_Payment_Gateway
                 if (!$already_paid) {
                     $order->update_status('on-hold', sprintf(
                         /* translators: 1: received, 2: requested, 3: coin */
-                        __('Oxialink: UNDERPAID - received %1$s of %2$s %3$s. Review before fulfilling.', 'oxialink-payments'),
+                        __('Oxialink: UNDERPAID - received %1$s of %2$s %3$s. Review before fulfilling.', 'oxialink-crypto-payments-for-woocommerce'),
                         isset($data['amount']) ? wc_clean($data['amount']) : '?',
                         isset($data['amount_requested']) ? wc_clean($data['amount_requested']) : '?',
                         isset($data['coin']) ? wc_clean($data['coin']) : ''
@@ -413,12 +433,12 @@ class WC_Gateway_Oxialink extends WC_Payment_Gateway
 
             case 'invoice.expired':
                 if ($order->has_status('pending')) {
-                    $order->update_status('cancelled', __('Oxialink: invoice expired unpaid.', 'oxialink-payments'));
+                    $order->update_status('cancelled', __('Oxialink: invoice expired unpaid.', 'oxialink-crypto-payments-for-woocommerce'));
                 }
                 break;
 
             case 'payment.uncredited':
-                $order->add_order_note(__('Oxialink: a payment arrived below the network minimum and was not credited.', 'oxialink-payments'));
+                $order->add_order_note(__('Oxialink: a payment arrived below the network minimum and was not credited.', 'oxialink-crypto-payments-for-woocommerce'));
                 break;
         }
 
@@ -431,7 +451,7 @@ class WC_Gateway_Oxialink extends WC_Payment_Gateway
     {
         $order->add_order_note(sprintf(
             /* translators: 1: amount, 2: coin, 3: tx hash */
-            __('Oxialink: payment settled on-chain. %1$s %2$s (tx %3$s).', 'oxialink-payments'),
+            __('Oxialink: payment settled on-chain. %1$s %2$s (tx %3$s).', 'oxialink-crypto-payments-for-woocommerce'),
             $amount,
             $coin,
             $tx
@@ -479,10 +499,10 @@ class WC_Gateway_Oxialink extends WC_Payment_Gateway
             $status = isset($data['data']['status']) ? strtolower((string) $data['data']['status']) : '';
             if ('paid' === $status && !$order->is_paid()) {
                 $this->mark_order_paid($order, '', $order->get_meta('_oxialink_coin'), '');
-                $order->add_order_note(__('Oxialink: confirmed by status poll (webhook was missed).', 'oxialink-payments'));
+                $order->add_order_note(__('Oxialink: confirmed by status poll (webhook was missed).', 'oxialink-crypto-payments-for-woocommerce'));
                 $order->save();
             } elseif (in_array($status, array('expired', 'cancelled'), true) && $order->has_status('pending')) {
-                $order->update_status('cancelled', __('Oxialink: invoice expired unpaid (status poll).', 'oxialink-payments'));
+                $order->update_status('cancelled', __('Oxialink: invoice expired unpaid (status poll).', 'oxialink-crypto-payments-for-woocommerce'));
                 $order->save();
             }
         }

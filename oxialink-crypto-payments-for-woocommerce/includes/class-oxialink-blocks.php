@@ -14,7 +14,7 @@ use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodTyp
 
 final class Oxialink_Blocks_Support extends AbstractPaymentMethodType
 {
-    /** @var WC_Gateway_Oxialink */
+    /** @var Oxialink_Payment_Gateway */
     private $gateway;
 
     protected $name = 'oxialink';
@@ -48,10 +48,10 @@ final class Oxialink_Blocks_Support extends AbstractPaymentMethodType
         $coins = array();
         if ($this->gateway) {
             foreach ($this->gateway->offered_coins() as $coin) {
-                $meta = isset(WC_Gateway_Oxialink::COIN_META[$coin]) ? WC_Gateway_Oxialink::COIN_META[$coin] : array($coin, '', 'btc');
+                $meta = isset(Oxialink_Payment_Gateway::COIN_META[$coin]) ? Oxialink_Payment_Gateway::COIN_META[$coin] : array($coin, '', 'btc');
                 $coins[] = array(
                     'value' => $coin,
-                    'label' => WC_Gateway_Oxialink::COINS[$coin],
+                    'label' => Oxialink_Payment_Gateway::COINS[$coin],
                     'name' => $meta[0],
                     'network' => $meta[1],
                     'logo' => 'https://oxialink.com/coin-logos/' . $meta[2] . '.png',
@@ -59,7 +59,7 @@ final class Oxialink_Blocks_Support extends AbstractPaymentMethodType
             }
         }
         return array(
-            'title'       => $this->get_setting('title', __('Cryptocurrency', 'oxialink-payments')),
+            'title'       => $this->get_setting('title', __('Cryptocurrency', 'oxialink-crypto-payments-for-woocommerce')),
             'description' => $this->get_setting('description', ''),
             'icon'        => plugins_url('assets/icon.png', OXIALINK_WC_PLUGIN_FILE),
             'coins'       => $coins,

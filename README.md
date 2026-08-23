@@ -2,7 +2,7 @@
   <a href="https://oxialink.com"><img src="https://oxialink.com/brand/logo.png" alt="Oxialink" width="260"></a>
 </p>
 
-# Oxialink Payments for WooCommerce
+# Oxialink Crypto Payments for WooCommerce
 
 Accept **USDT, Bitcoin, Ethereum, TON and more** in your WooCommerce store. Payments settle on-chain to a wallet you control - no chargebacks, no rolling reserves, fees from 0.2%.
 
@@ -28,7 +28,7 @@ Accept **USDT, Bitcoin, Ethereum, TON and more** in your WooCommerce store. Paym
 
 ## Installation
 
-1. Download the latest release zip (or zip the `oxialink-payments` folder from this repo).
+1. Download the latest release zip (or zip the `oxialink-crypto-payments-for-woocommerce` folder from this repo).
 2. WordPress admin → **Plugins → Add New → Upload Plugin** → choose the zip → **Activate**.
 3. **WooCommerce → Settings → Payments → Oxialink**:
    - Paste your **API key** and **API secret** (from the [API docs page](https://oxialink.com/api-docs) while signed in)
@@ -53,3 +53,7 @@ That's it. Orders move to *Processing* (or *Completed*, your choice) the moment 
 ## License
 
 GPLv2 or later.
+
+---
+
+Oxialink Crypto Payments for WooCommerce is developed and maintained by [Oxialink](https://oxialink.com). It is an independent plugin and is not affiliated with, endorsed by, or sponsored by Automattic Inc. "WooCommerce" and "WordPress" are trademarks of their respective owners, used here only to describe compatibility.

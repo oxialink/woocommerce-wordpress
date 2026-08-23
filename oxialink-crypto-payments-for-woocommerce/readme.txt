@@ -1,8 +1,8 @@
-=== Oxialink Payments ===
+=== Oxialink Crypto Payments for WooCommerce ===
 Contributors: oxialink
 Tags: crypto payment gateway, woocommerce, usdt, bitcoin, cryptocurrency
 Requires at least: 5.8
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPLv2 or later
@@ -23,6 +23,8 @@ Oxialink is a crypto payment gateway built to settle: every payment is tracked t
 * No chargebacks, no rolling reserves, processing from 0.2% per payment
 
 This plugin connects your store to the Oxialink payment service. A free Oxialink account is required; Oxialink charges a processing fee per payment as published at https://oxialink.com/fees. All plugin functionality is included with the free plan.
+
+Oxialink Crypto Payments for WooCommerce is developed and maintained by Oxialink (https://oxialink.com). It is an independent plugin and is not affiliated with, endorsed by, or sponsored by Automattic Inc. "WooCommerce" and "WordPress" are trademarks of their respective owners and are used here only to describe what this plugin is compatible with.
 
 == External services ==
 
