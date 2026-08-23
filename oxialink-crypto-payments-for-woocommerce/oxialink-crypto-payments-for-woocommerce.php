@@ -8,6 +8,7 @@
  * Author URI: https://oxialink.com
  * Text Domain: oxialink-crypto-payments-for-woocommerce
  * Requires at least: 5.8
+ * Requires Plugins: woocommerce
  * Requires PHP: 7.4
  * WC requires at least: 6.0
  * License: GPLv2 or later
@@ -93,8 +94,25 @@ add_action('woocommerce_thankyou', function ($order_id) {
     echo '</section>';
 }, 10);
 
-// Settings shortcut on the plugins screen.
+// On WordPress 6.5 and later the Requires Plugins header refuses the activation
+// outright. Older versions activate happily and then show nothing, so say why.
+add_action('admin_notices', function () {
+    if (class_exists('WooCommerce') || 'plugins.php' !== $GLOBALS['pagenow'] || !current_user_can('activate_plugins')) {
+        return;
+    }
+    echo '<div class="notice notice-warning"><p>' . esc_html__(
+        'Oxialink Crypto Payments for WooCommerce needs WooCommerce installed and active. The payment gateway stays hidden until then.',
+        'oxialink-crypto-payments-for-woocommerce'
+    ) . '</p></div>';
+});
+
+// Settings shortcut on the plugins screen. Only when WooCommerce is active:
+// the wc-settings screen belongs to WooCommerce, and without it WordPress meets
+// the click with "Sorry, you are not allowed to access this page".
 add_filter('plugin_action_links_' . plugin_basename(__FILE__), function ($links) {
+    if (!class_exists('WooCommerce')) {
+        return $links;
+    }
     $url = admin_url('admin.php?page=wc-settings&tab=checkout&section=oxialink');
     array_unshift($links, '<a href="' . esc_url($url) . '">' . esc_html__('Settings', 'oxialink-crypto-payments-for-woocommerce') . '</a>');
     return $links;
